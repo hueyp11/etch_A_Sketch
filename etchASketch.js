@@ -1,6 +1,8 @@
 function createDiv () {
     var div = document.createElement('div');
     div.className = 'box';
+    div.style.width = "20px";
+    div.style.height = "20px";
     return div;
 };
 
