@@ -1,16 +1,16 @@
 var mainBox = document.getElementById('main');
+mainBox.style.display = 'grid';
 var boxes = [];
 var resetUserInput = document.createElement('button');
 resetUserInput.innerText = 'RESET';
 document.body.appendChild(resetUserInput);
 resetUserInput.addEventListener('click', () => {
     resetUserInput = prompt('Enter number of squares per side for the new grid (max 100 per side): ')
-    resetUserInput = resetUserInput ** 2;
-    if (resetUserInput > 10000) {
+    if (resetUserInput > 100) {
         alert('Please enter a number less than 100!');
     } else {
         clearMainBox();
-        pushBoxes();
+        pushBoxes(resetUserInput);
         appendChildren(mainBox, boxes);
     };
 });
@@ -18,34 +18,24 @@ resetUserInput.addEventListener('click', () => {
 function createDiv () {
     var div = document.createElement('div');
     div.className = 'box';
-    //div.style.display = 'flex';
-    //div.style.justifyContent = 'center';
-    //div.style.alignItems = 'center';
-    div.style.flex = '1 0 4%';
-    div.style.width = `${400/100}px`;
-    //div.style.boxSizing = 'border-box';
-    // if (60 < resetUserInput <= 100) {
-    //     div.style.flex = '1 0 1%';
-    //     div.style.width = '1vh';
-    // } else if (0 < resetUserInput <= 60) {
-    //     div.style.flex = '1 0 3%';
-    // };
-    //div.style.height = `${400/25}px`;
-    //div.style.border = 'thin solid black';
-    div.addEventListener('mouseout', () => {
+    div.addEventListener('pointerleave', () => {
         div.style.backgroundColor = 'black'; 
     });
     return div;
 };
 
-function pushBoxes () {
-    for (let i=0; i < resetUserInput; i++) {
+function pushBoxes (input) {
+    for (let i=0; i < resetUserInput**2; i++) {
+        mainBox.style.gridTemplateColumns = `repeat(${input}, 1fr)`;
+        mainBox.style.gridTemplateRows = `repeat(${input}, 1fr)`;
         boxes.push(createDiv());
     };
 };
 
-function pushBoxesDefault () {
-    for (let i=0; i < 625; i++) {
+function pushBoxesDefault (size) {
+    for (let i=0; i < 256; i++) {
+        mainBox.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+        mainBox.style.gridTemplateRows = `repeat(${size}, 1fr)`;
         boxes.push(createDiv());
     };
 };
@@ -63,5 +53,5 @@ function clearMainBox () {
 };
 
 createDiv();
-pushBoxesDefault();
+pushBoxesDefault(16);
 appendChildren(mainBox, boxes);
